@@ -7,30 +7,36 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Uid\UuidV7;
+use Symfony\Component\Validator\Constraints as Assert;
+use App\Validator\Constraints as AppAssert;
+
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[ORM\Table(name: '`user`')]
+#[ORM\Table(name: 'users')]
 class User
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    #[ORM\Column(type: 'uuid', unique: true)]
+    private UuidV7 $id;
 
     #[ORM\Column(length: 64)]
-    private ?string $name = null;
+    #[Assert\Length(max: 64)]
+    private string $name;
 
     #[ORM\Column(length: 16)]
-    private ?string $phone = null;
+    #[AppAssert\Phone]
+    private string $phone;
 
     #[ORM\Column(length: 64)]
-    private ?string $email = null;
+    #[Assert\Length(max: 64)]
+    private string $email;
 
     #[ORM\Column(type: Types::TEXT)]
-    private ?string $password = null;
+    private string $password;
 
     #[ORM\OneToOne(mappedBy: 'relatedUser', cascade: ['persist', 'remove'])]
-    private ?Cart $cart = null;
+    private Cart $cart;
 
     /**
      * @var Collection<int, Order>
@@ -38,17 +44,18 @@ class User
     #[ORM\OneToMany(targetEntity: Order::class, mappedBy: 'relatedUser', orphanRemoval: true)]
     private Collection $orders;
 
-    public function __construct()
+    public function __construct(?UuidV7 $id = null)
     {
+        $this->id     = $id ?? UuidV7::v7();
         $this->orders = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getId(): UuidV7
     {
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -60,7 +67,7 @@ class User
         return $this;
     }
 
-    public function getPhone(): ?string
+    public function getPhone(): string
     {
         return $this->phone;
     }
@@ -72,7 +79,7 @@ class User
         return $this;
     }
 
-    public function getEmail(): ?string
+    public function getEmail(): string
     {
         return $this->email;
     }
@@ -84,7 +91,7 @@ class User
         return $this;
     }
 
-    public function getPassword(): ?string
+    public function getPassword(): string
     {
         return $this->password;
     }
@@ -96,7 +103,7 @@ class User
         return $this;
     }
 
-    public function getCart(): ?Cart
+    public function getCart(): Cart
     {
         return $this->cart;
     }

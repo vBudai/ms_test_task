@@ -6,28 +6,38 @@ use App\Repository\OrderRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Uid\Uuid;
+use Symfony\Component\Validator\Constraints as Assert;
+use App\Validator\Constraints as AppAssert;
+use Symfony\Component\Uid\UuidV7;
 
 #[ORM\Entity(repositoryClass: OrderRepository::class)]
-#[ORM\Table(name: '`order`')]
+#[ORM\Table(name: 'orders')]
 class Order
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    #[ORM\Column(type: 'uuid', unique: true)]
+    #[Assert\Uuid]
+    private UuidV7 $id;
 
     #[ORM\ManyToOne(inversedBy: 'orders')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?User $relatedUser = null;
+    private User $relatedUser;
 
     #[ORM\Column(length: 32)]
-    private ?string $status = null;
+    #[Assert\Length(min: 1, max: 32)]
+    private string $status;
 
     #[ORM\Column(length: 16)]
-    private ?string $phone = null;
+    #[AppAssert\Phone]
+    private string $phone;
 
     #[ORM\Column(length: 16)]
-    private ?string $deliveryType = null;
+    #[Assert\Choice(
+        choices: ['Оплачен', 'Ждёт сборки', 'В сборке', 'Готов к выдаче', 'Доставляется', 'Получен', 'Отменён'],
+        message: 'Неправильный тип доставки'
+    )]
+    private string $deliveryType;
 
     /**
      * @var Collection<int, OrderItem>
@@ -35,22 +45,23 @@ class Order
     #[ORM\OneToMany(targetEntity: OrderItem::class, mappedBy: 'relatedOrder', orphanRemoval: true)]
     private Collection $items;
 
-    public function __construct()
+    public function __construct(?UuidV7 $id = null)
     {
+        $this->id    = $id ?? Uuid::v7();
         $this->items = new ArrayCollection();
     }
 
-    public function getId(): ?int
+    public function getId(): UuidV7
     {
         return $this->id;
     }
 
-    public function getRelatedUser(): ?User
+    public function getRelatedUser(): User
     {
         return $this->relatedUser;
     }
 
-    public function setRelatedUser(?User $relatedUser): static
+    public function setRelatedUser(User $relatedUser): static
     {
         $this->relatedUser = $relatedUser;
 
@@ -69,7 +80,7 @@ class Order
         return $this;
     }
 
-    public function getPhone(): ?string
+    public function getPhone(): string
     {
         return $this->phone;
     }
@@ -81,7 +92,7 @@ class Order
         return $this;
     }
 
-    public function getDeliveryType(): ?string
+    public function getDeliveryType(): string
     {
         return $this->deliveryType;
     }
@@ -113,13 +124,7 @@ class Order
 
     public function removeItem(OrderItem $item): static
     {
-        if ($this->items->removeElement($item)) {
-            // set the owning side to null (unless already changed)
-            if ($item->getRelatedOrder() === $this) {
-                $item->setRelatedOrder(null);
-            }
-        }
-
+        $this->items->removeElement($item);
         return $this;
     }
 }

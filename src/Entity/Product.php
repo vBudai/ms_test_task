@@ -5,48 +5,63 @@ namespace App\Entity;
 use App\Repository\ProductRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Uid\UuidV7;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: ProductRepository::class)]
+#[ORM\Table(name: 'products')]
 class Product
 {
     #[ORM\Id]
-    #[ORM\GeneratedValue]
-    #[ORM\Column]
-    private ?int $id = null;
+    #[ORM\Column(type: 'uuid', unique: true)]
+    private UuidV7 $id;
 
     #[ORM\Column(length: 255)]
-    private ?string $name = null;
+    #[Assert\Length(max: 255)]
+    private string $name;
 
     #[ORM\Column]
-    private ?int $cost = null;
+    #[Assert\Positive]
+    private int $cost;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
     #[ORM\Column]
-    private ?int $tax = null;
+    #[Assert\Positive]
+    private int $tax;
 
     #[ORM\Column]
-    private ?int $version = null;
+    #[Assert\Positive]
+    private int $version;
 
     #[ORM\Column]
-    private ?int $height = null;
+    #[Assert\Positive]
+    private int $height;
 
     #[ORM\Column]
-    private ?int $width = null;
+    #[Assert\Positive]
+    private int $width;
 
     #[ORM\Column]
-    private ?int $length = null;
+    #[Assert\Positive]
+    private int $length;
 
     #[ORM\Column]
-    private ?int $weight = null;
+    #[Assert\Positive]
+    private int $weight;
 
-    public function getId(): ?int
+    public function __construct(?UuidV7 $id = null)
+    {
+        $this->id = $id;
+    }
+
+    public function getId(): UuidV7
     {
         return $this->id;
     }
 
-    public function getName(): ?string
+    public function getName(): string
     {
         return $this->name;
     }
@@ -58,7 +73,7 @@ class Product
         return $this;
     }
 
-    public function getCost(): ?int
+    public function getCost(): int
     {
         return $this->cost;
     }
@@ -70,7 +85,7 @@ class Product
         return $this;
     }
 
-    public function getTax(): ?int
+    public function getTax(): int
     {
         return $this->tax;
     }
@@ -82,7 +97,7 @@ class Product
         return $this;
     }
 
-    public function getVersion(): ?int
+    public function getVersion(): int
     {
         return $this->version;
     }
@@ -94,7 +109,7 @@ class Product
         return $this;
     }
 
-    public function getHeight(): ?int
+    public function getHeight(): int
     {
         return $this->height;
     }
