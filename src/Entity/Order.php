@@ -2,6 +2,8 @@
 
 namespace App\Entity;
 
+use App\Enum\Order\OrderDeliveryType;
+use App\Enum\Order\OrderStatus;
 use App\Repository\OrderRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -25,7 +27,10 @@ class Order
     private User $relatedUser;
 
     #[ORM\Column(length: 32)]
-    #[Assert\Length(min: 1, max: 32)]
+    #[Assert\Choice(
+        callback: [OrderStatus::class, 'values'],
+        message: 'Недопустимый статус заказа'
+    )]
     private string $status;
 
     #[ORM\Column(length: 16)]
@@ -34,8 +39,8 @@ class Order
 
     #[ORM\Column(length: 16)]
     #[Assert\Choice(
-        choices: ['Оплачен', 'Ждёт сборки', 'В сборке', 'Готов к выдаче', 'Доставляется', 'Получен', 'Отменён'],
-        message: 'Неправильный тип доставки'
+        callback: [OrderDeliveryType::class, 'values'],
+        message: 'Недопустимый тип доставки'
     )]
     private string $deliveryType;
 

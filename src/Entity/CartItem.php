@@ -28,9 +28,9 @@ class CartItem
 
     #[ORM\Column(type: Types::SMALLINT)]
     #[Assert\Positive]
-    private int $amount;
+    private int $amount = 0;
 
-    public function __construct(?UuidV7 $id)
+    public function __construct(?UuidV7 $id = null)
     {
         $this->id = $id ?? Uuid::v7();
     }
@@ -73,6 +73,18 @@ class CartItem
     {
         $this->amount = $amount;
 
+        return $this;
+    }
+
+    public function incrementAmount(): static
+    {
+        ++$this->amount;
+        return $this;
+    }
+
+    public function decrementAmount(): static
+    {
+        --$this->amount;
         return $this;
     }
 }

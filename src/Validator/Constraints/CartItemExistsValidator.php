@@ -1,0 +1,31 @@
+<?php
+
+namespace App\Validator\Constraints;
+
+use App\Repository\CartItemRepository;
+use Symfony\Component\Validator\Constraint;
+use Symfony\Component\Validator\ConstraintValidator;
+
+class CartItemExistsValidator extends ConstraintValidator
+{
+    public function __construct(
+        private readonly CartItemRepository $repo
+    ){}
+
+    /**
+     * @var mixed $value
+     * @var CartItemExists $constraint
+     */
+    public function validate(mixed $value, Constraint $constraint)
+    {
+        if (null === $value || '' === $value) {
+            return;
+        }
+
+        if(!$this->repo->find($value)){
+            $this->context
+                ->buildViolation($constraint->message)
+                ->addViolation();
+        }
+    }
+}

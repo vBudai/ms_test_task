@@ -7,6 +7,8 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Uid\UuidV7;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Validator\Constraints as AppAssert;
@@ -14,7 +16,7 @@ use App\Validator\Constraints as AppAssert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: 'users')]
-class User
+class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\Column(type: 'uuid', unique: true)]
@@ -24,11 +26,11 @@ class User
     #[Assert\Length(max: 64)]
     private string $name;
 
-    #[ORM\Column(length: 16)]
+    #[ORM\Column(length: 16, unique: true)]
     #[AppAssert\Phone]
     private string $phone;
 
-    #[ORM\Column(length: 64)]
+    #[ORM\Column(length: 64, unique: true)]
     #[Assert\Length(max: 64)]
     private string $email;
 
@@ -140,13 +142,20 @@ class User
 
     public function removeOrder(Order $order): static
     {
-        if ($this->orders->removeElement($order)) {
-            // set the owning side to null (unless already changed)
-            if ($order->getRelatedUser() === $this) {
-                $order->setRelatedUser(null);
-            }
-        }
+        $this->orders->removeElement($order);
 
         return $this;
+    }
+
+    public function getRoles(): array
+    {
+        return ['ROLE_ADMIN'];
+    }
+
+    public function eraseCredentials(): void{}
+
+    public function getUserIdentifier(): string
+    {
+        return $this->email;
     }
 }

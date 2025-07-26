@@ -15,4 +15,26 @@ class UserRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, User::class);
     }
+
+    public function isExistsByEmailOrPhone(string $email, string $phone): bool
+    {
+        return (bool)$this->createQueryBuilder('u')
+            ->select('1')
+            ->where('u.email = :email')
+            ->orWhere('u.phone = :phone')
+            ->setMaxResults(1)
+            ->setParameter('email', $email)
+            ->setParameter('phone', $phone)
+            ->getQuery()
+            ->getOneOrNullResult();
+    }
+
+    public function add(User $entity, bool $flush = false): void
+    {
+        $this->getEntityManager()->persist($entity);
+
+        if ($flush) {
+            $this->getEntityManager()->flush();
+        }
+    }
 }
