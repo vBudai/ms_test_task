@@ -3,7 +3,7 @@
 namespace App\Tests\Service\Product;
 
 use App\Entity\Product;
-use App\Factory\ProductFactory;
+use App\Tests\Factory\ProductFactory;
 use App\Repository\ProductRepository;
 use App\Service\Product\ProductService;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;

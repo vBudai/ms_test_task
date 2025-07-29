@@ -15,4 +15,15 @@ class OrderItemRepository extends ServiceEntityRepository
     {
         parent::__construct($registry, OrderItem::class);
     }
+
+    public function getOrderItemsWithUserInfo(): array
+    {
+        return $this->createQueryBuilder('oi')
+            ->select('p.name AS product_name', 'oi.cost AS price', 'oi.amount', 'u.id AS user_id')
+            ->join('oi.product', 'p')
+            ->join('oi.relatedOrder', 'o')
+            ->join('o.relatedUser', 'u')
+            ->getQuery()
+            ->getArrayResult();
+    }
 }

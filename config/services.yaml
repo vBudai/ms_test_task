@@ -1,16 +1,13 @@
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
+    app.reports.dir: '%kernel.project_dir%/var/reports'
 
 services:
     _defaults:
         autowire: true
         autoconfigure: true
 
+    App\Service\Report\FileReporter: ~
 
     App\:
         resource: '../src/'
-
-    App\Service\Product\ProductServiceInterface: '@App\Service\Product\ProductService'
-    App\Service\User\UserServiceInterface: '@App\Service\User\UserService'
-    App\Service\Cart\CartServiceInterface: '@App\Service\Cart\CartService'
-    App\Service\Order\OrderServiceInterface: '@App\Service\Order\OrderService'

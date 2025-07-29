@@ -3,29 +3,44 @@
 namespace App\Controller;
 
 use App\DTO\Request\User\RegisterUserRequest;
-use App\Service\Cart\CartServiceInterface;
-use App\Service\User\UserServiceInterface;
+use App\Exception\User\UserAlreadyExistsException;
+use App\Service\Cart\CartService;
+use App\Service\User\UserService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Annotation\Route;
 
 final class UsersController extends AbstractController
 {
     public function __construct(
-        private readonly UserServiceInterface $userService,
-        private readonly CartServiceInterface $cartService,
+        private readonly UserService $userService,
+        private readonly CartService $cartService,
     ){}
 
-    #[Route('/api/users/register', name: 'api_users_register', methods: ['POST'])]
+    /**
+     * @throws UserAlreadyExistsException
+     */
+    #[Route('/api/users/register', name: 'api_users_register', methods: ['POST'], format: 'json')]
     public function register(
         #[MapRequestPayload]
-        RegisterUserRequest $request
-    ): Response
+        RegisterUserRequest $request,
+    ): JsonResponse
     {
         $user = $this->userService->register($request);
-        $this->cartService->createForUser($user);
+        $cart = $this->cartService->createCartForUser($user);
 
-        return $this->json(['msg' => 'User registered'], Response::HTTP_CREATED);
+        return $this->json(
+            data: [
+                'status' => 'success',
+                'data'   => [
+                    'user' => $user,
+                    'cart' => $cart,
+                ]
+            ],
+            context: [
+                'groups' => ['public' ]
+            ]
+        );
     }
 }

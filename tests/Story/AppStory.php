@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Story;
+namespace App\Tests\Story;
 
-use App\Factory\ProductFactory;
+use App\Tests\Factory\ProductFactory;
 use Zenstruck\Foundry\Attribute\AsFixture;
 use Zenstruck\Foundry\Story;
 

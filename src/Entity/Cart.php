@@ -6,6 +6,7 @@ use App\Repository\CartRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Uid\Uuid;
 use Symfony\Component\Uid\UuidV7;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -17,6 +18,7 @@ class Cart
     #[ORM\Id]
     #[ORM\Column(type: 'uuid', unique: true)]
     #[Assert\Uuid]
+    #[Groups(['public'])]
     private UuidV7 $id;
 
     #[ORM\OneToOne(inversedBy: User::class, cascade: ['persist', 'remove'])]
@@ -72,12 +74,7 @@ class Cart
 
     public function removeItem(CartItem $item): static
     {
-        if ($this->items->removeElement($item)) {
-            // set the owning side to null (unless already changed)
-            if ($item->getCart() === $this) {
-                $item->setCart(null);
-            }
-        }
+        $this->items->removeElement($item);
 
         return $this;
     }

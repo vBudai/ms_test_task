@@ -12,7 +12,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Uid\UuidV7;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Validator\Constraints as AppAssert;
-
+use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: 'users')]
@@ -20,18 +20,22 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\Column(type: 'uuid', unique: true)]
+    #[Groups(['public'])]
     private UuidV7 $id;
 
     #[ORM\Column(length: 64)]
     #[Assert\Length(max: 64)]
+    #[Groups(['public'])]
     private string $name;
 
     #[ORM\Column(length: 16, unique: true)]
     #[AppAssert\Phone]
+    #[Groups(['public'])]
     private string $phone;
 
     #[ORM\Column(length: 64, unique: true)]
     #[Assert\Length(max: 64)]
+    #[Groups(['public'])]
     private string $email;
 
     #[ORM\Column(type: Types::TEXT)]

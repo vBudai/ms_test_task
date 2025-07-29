@@ -3,8 +3,11 @@
 namespace App\Controller;
 
 use App\DTO\Request\Cart\CartProductRequest;
-use App\Service\Cart\CartServiceInterface;
+use App\Exception\Cart\CartItemNotFoundException;
+use App\Exception\User\UserNotAuthenticatedException;
+use App\Service\Cart\CartService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Attribute\MapRequestPayload;
 use Symfony\Component\Routing\Annotation\Route;
@@ -12,33 +15,44 @@ use Symfony\Component\Routing\Annotation\Route;
 final class CartsController extends AbstractController
 {
     public function __construct(
-        private readonly CartServiceInterface $service
+        private readonly CartService $service
     ){}
 
-    #[Route('/api/carts/product', name: 'api_carts_add_product', methods: ['POST'])]
+
+    /**
+     * @throws UserNotAuthenticatedException
+     */
+    #[Route('/api/carts/product', name: 'api_carts_add_product', methods: ['POST'], format: 'json')]
     public function addProduct(
         #[MapRequestPayload]
         CartProductRequest $request,
-    ): Response
+    ): JsonResponse
     {
-        $this->service->addProduct($request);
-        return $this->json(['msg' => 'Product has been added to cart']);
+        $cartItem = $this->service->addProduct($request);
+        return $this->json([ 'status' => 'success', 'data' => $cartItem ]);
     }
 
-    #[Route('/api/carts/product', name: 'api_carts_remove_product', methods: ['DELETE'])]
+    /**
+     * @throws UserNotAuthenticatedException
+     * @throws CartItemNotFoundException
+     */
+    #[Route('/api/carts/product', name: 'api_carts_remove_product', methods: ['DELETE'], format: 'json')]
     public function removeProduct(
         #[MapRequestPayload]
         CartProductRequest $request,
-    ): Response
+    ): JsonResponse
     {
         $this->service->removeProduct($request);
-        return $this->json(['msg' => 'Product has been removed to cart']);
+        return $this->json([], Response::HTTP_NO_CONTENT);
     }
 
-    #[Route('/api/carts/clear', name: 'api_carts_clear', methods: ['DELETE'])]
-    public function clearCart(): Response
+    /**
+     * @throws UserNotAuthenticatedException
+     */
+    #[Route('/api/carts/clear', name: 'api_carts_clear', methods: ['DELETE'], format: 'json')]
+    public function clearCart(): JsonResponse
     {
         $this->service->clearCart();
-        return $this->json(['msg' => 'Cart has been cleared']);
+        return $this->json([], Response::HTTP_NO_CONTENT);
     }
 }

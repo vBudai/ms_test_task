@@ -15,12 +15,16 @@ readonly class UserProvider
 
     /**
      * @throws UserNotAuthenticatedException
+     * @throws \Exception
      */
     public function getUser(): User
     {
         $user = $this->security->getUser();
         if($user === null){
             throw new UserNotAuthenticatedException();
+        }
+        if(!($user instanceof User)){
+            throw new \Exception("Неправильный Entity пользователя");
         }
 
         return $user;
