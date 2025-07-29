@@ -4,10 +4,10 @@ namespace App\Service\Product;
 
 use App\Repository\ProductRepository;
 
-class ProductService implements ProductServiceInterface
+readonly class ProductService
 {
     public function __construct(
-        private readonly ProductRepository $repo
+        private ProductRepository $repo
     ){}
 
     public function getAllProducts(): array

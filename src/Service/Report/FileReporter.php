@@ -7,14 +7,14 @@ use App\Repository\OrderItemRepository;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\Uid\UuidV7;
 
-class FileReporter implements ReporterInterface
+readonly class FileReporter implements ReporterInterface
 {
-    private readonly string $filePath;
+    private string $filePath;
 
     public function __construct(
         private OrderItemRepository $repo,
-        private ReportFactory $factory,
-        ParameterBagInterface $parameters,
+        private ReportFactory       $factory,
+        ParameterBagInterface       $parameters,
     ){
         $this->filePath = $parameters->get('app.reports.dir');
         if (!is_dir($this->filePath)) {

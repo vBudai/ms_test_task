@@ -8,7 +8,7 @@ use App\Exception\User\UserAlreadyExistsException;
 use App\Factory\UserFactory;
 use App\Repository\UserRepository;
 
-readonly class UserService implements UserServiceInterface
+readonly class UserService
 {
     public function __construct(
         private UserRepository $repo,
