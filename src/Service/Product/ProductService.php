@@ -7,8 +7,9 @@ use App\Repository\ProductRepository;
 readonly class ProductService
 {
     public function __construct(
-        private ProductRepository $repo
-    ){}
+        private ProductRepository $repo,
+    ) {
+    }
 
     public function getAllProducts(): array
     {

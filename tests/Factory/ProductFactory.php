@@ -19,15 +19,15 @@ final class ProductFactory extends PersistentProxyObjectFactory
     protected function defaults(): array|callable
     {
         return [
-            'id'      => new UuidV7(),
-            'cost'    => self::faker()->randomNumber(),
-            'height'  => self::faker()->randomNumber(),
-            'length'  => self::faker()->randomNumber(),
-            'name'    => self::faker()->text(255),
-            'tax'     => self::faker()->randomNumber(),
+            'id' => new UuidV7(),
+            'cost' => self::faker()->randomNumber(),
+            'height' => self::faker()->randomNumber(),
+            'length' => self::faker()->randomNumber(),
+            'name' => self::faker()->text(255),
+            'tax' => self::faker()->randomNumber(),
             'version' => self::faker()->randomNumber(),
-            'weight'  => self::faker()->randomNumber(),
-            'width'   => self::faker()->randomNumber(),
+            'weight' => self::faker()->randomNumber(),
+            'width' => self::faker()->randomNumber(),
             'description' => self::faker()->text(255),
         ];
     }

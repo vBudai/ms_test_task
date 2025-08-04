@@ -6,5 +6,6 @@ class ReportUserDataDto
 {
     public function __construct(
         public string $id,
-    ){}
+    ) {
+    }
 }

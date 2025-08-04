@@ -16,7 +16,8 @@ final class UsersController extends AbstractController
     public function __construct(
         private readonly UserService $userService,
         private readonly CartService $cartService,
-    ){}
+    ) {
+    }
 
     /**
      * @throws UserAlreadyExistsException
@@ -25,15 +26,14 @@ final class UsersController extends AbstractController
     public function register(
         #[MapRequestPayload]
         RegisterUserRequest $request,
-    ): JsonResponse
-    {
+    ): JsonResponse {
         $user = $this->userService->register($request);
         $this->cartService->createCartForUser($user);
 
         return $this->json(
             data: $user,
             context: [
-                'groups' => ['public' ]
+                'groups' => ['public'],
             ]
         );
     }

@@ -3,16 +3,16 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use App\Validator\Constraints as AppAssert;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Serializer\Annotation\Groups;
 use Symfony\Component\Uid\UuidV7;
 use Symfony\Component\Validator\Constraints as Assert;
-use App\Validator\Constraints as AppAssert;
-use Symfony\Component\Serializer\Annotation\Groups;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: 'users')]
@@ -52,7 +52,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function __construct(?UuidV7 $id = null)
     {
-        $this->id     = $id ?? UuidV7::v7();
+        $this->id = $id ?? UuidV7::v7();
         $this->orders = new ArrayCollection();
     }
 
@@ -156,7 +156,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return ['ROLE_ADMIN'];
     }
 
-    public function eraseCredentials(): void{}
+    public function eraseCredentials(): void
+    {
+    }
 
     public function getUserIdentifier(): string
     {

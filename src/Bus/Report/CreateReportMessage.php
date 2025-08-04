@@ -8,5 +8,6 @@ class CreateReportMessage
 {
     public function __construct(
         public UuidV7 $id = new UuidV7(),
-    ){}
+    ) {
+    }
 }

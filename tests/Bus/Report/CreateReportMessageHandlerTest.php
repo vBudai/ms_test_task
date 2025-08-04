@@ -33,13 +33,13 @@ class CreateReportMessageHandlerTest extends KernelTestCase
         }
     }
 
-//    protected function tearDown(): void
-//    {
-//        if (is_dir($this->tempDir)) {
-//            array_map('unlink', glob("$this->tempDir/*"));
-//            rmdir($this->tempDir);
-//        }
-//    }
+    //    protected function tearDown(): void
+    //    {
+    //        if (is_dir($this->tempDir)) {
+    //            array_map('unlink', glob("$this->tempDir/*"));
+    //            rmdir($this->tempDir);
+    //        }
+    //    }
 
     /**
      * @throws ExceptionInterface
@@ -50,10 +50,8 @@ class CreateReportMessageHandlerTest extends KernelTestCase
         $reportId = new UuidV7();
         $this->bus()->dispatch(new CreateReportMessage($reportId));
 
-
         /* ACT */
         $result = $this->transport('reports')->process();
-
 
         /* ASSERT */
 
@@ -85,22 +83,21 @@ class CreateReportMessageHandlerTest extends KernelTestCase
         $expectedProducts = [
             [
                 'product_name' => AppStory::$products[0]->getName(),
-                'price'        => AppStory::$orderItems[0]->getCost(),
-                'amount'       => AppStory::$orderItems[0]->getAmount(),
-                'user'         => [ 'id' => $expectedUserId ],
+                'price' => AppStory::$orderItems[0]->getCost(),
+                'amount' => AppStory::$orderItems[0]->getAmount(),
+                'user' => ['id' => $expectedUserId],
             ],
             [
                 'product_name' => AppStory::$products[1]->getName(),
-                'price'        => AppStory::$orderItems[1]->getCost(),
-                'amount'       => AppStory::$orderItems[1]->getAmount(),
-                'user'         => [ 'id' => $expectedUserId ],
+                'price' => AppStory::$orderItems[1]->getCost(),
+                'amount' => AppStory::$orderItems[1]->getAmount(),
+                'user' => ['id' => $expectedUserId],
             ],
         ];
 
         /* ACT */
         $this->bus()->dispatch(new CreateReportMessage($reportId));
         $this->transport('reports')->process();
-
 
         /* ASSERT */
         $this->assertFileExists($expectedPath);
@@ -110,10 +107,10 @@ class CreateReportMessageHandlerTest extends KernelTestCase
             $found = false;
             foreach ($data as $item) {
                 if (
-                    $item['product_name'] === $expectedItem['product_name'] &&
-                    $item['price']        === $expectedItem['price'] &&
-                    $item['amount']       === $expectedItem['amount'] &&
-                    $item['user']['id']   === $expectedItem['user']['id']
+                    $item['product_name'] === $expectedItem['product_name']
+                    && $item['price'] === $expectedItem['price']
+                    && $item['amount'] === $expectedItem['amount']
+                    && $item['user']['id'] === $expectedItem['user']['id']
                 ) {
                     $found = true;
                     break;

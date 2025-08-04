@@ -13,7 +13,8 @@ final class ReportsController extends AbstractController
 {
     public function __construct(
         private readonly MessageBusInterface $messageBus,
-    ){}
+    ) {
+    }
 
     /**
      * @throws ExceptionInterface

@@ -23,5 +23,6 @@ class CreateOrderRequest
             new AppAssert\CartItemExists(),
         ])]
         public array $cartItems,
-    ){}
+    ) {
+    }
 }

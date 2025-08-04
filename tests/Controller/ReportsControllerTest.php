@@ -2,17 +2,11 @@
 
 namespace App\Tests\Controller;
 
-use App\Bus\Notification\ReportResultNotificationMessage;
 use App\Bus\Report\CreateReportMessage;
-use App\Entity\User;
-use App\Service\Report\ReporterInterface;
 use App\Tests\ApiAuthTrait;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\KernelBrowser;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Messenger\Transport\InMemory\InMemoryTransport;
-use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Uid\UuidV7;
 use Zenstruck\Foundry\Test\Factories;
 use Zenstruck\Foundry\Test\ResetDatabase;
@@ -45,7 +39,6 @@ class ReportsControllerTest extends WebTestCase
                 'HTTP_ACCEPT' => 'application/json',
             ]
         );
-
 
         $response = $this->client->getResponse();
 

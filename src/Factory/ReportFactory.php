@@ -18,7 +18,7 @@ class ReportFactory
                 $row['product_name'],
                 $row['price'],
                 $row['amount'],
-                new ReportUserDataDto( (string)$row['user_id'] )
+                new ReportUserDataDto((string) $row['user_id'])
             );
         }
 

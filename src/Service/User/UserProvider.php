@@ -5,13 +5,13 @@ namespace App\Service\User;
 use App\Entity\User;
 use App\Exception\User\UserNotAuthenticatedException;
 use Symfony\Bundle\SecurityBundle\Security;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 readonly class UserProvider
 {
     public function __construct(
-        private Security $security
-    ){}
+        private Security $security,
+    ) {
+    }
 
     /**
      * @throws UserNotAuthenticatedException
@@ -20,11 +20,11 @@ readonly class UserProvider
     public function getUser(): User
     {
         $user = $this->security->getUser();
-        if($user === null){
+        if (null === $user) {
             throw new UserNotAuthenticatedException();
         }
-        if(!($user instanceof User)){
-            throw new \Exception("Неправильный Entity пользователя");
+        if (!($user instanceof User)) {
+            throw new \Exception('Неправильный Entity пользователя');
         }
 
         return $user;

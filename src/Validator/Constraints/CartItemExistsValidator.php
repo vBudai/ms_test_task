@@ -9,12 +9,13 @@ use Symfony\Component\Validator\ConstraintValidator;
 class CartItemExistsValidator extends ConstraintValidator
 {
     public function __construct(
-        private readonly CartItemRepository $repo
-    ){}
+        private readonly CartItemRepository $repo,
+    ) {
+    }
 
     /**
-     * @var mixed $value
-     * @var CartItemExists $constraint
+     * @var mixed
+     * @var CartItemExists
      */
     public function validate(mixed $value, Constraint $constraint)
     {
@@ -22,7 +23,7 @@ class CartItemExistsValidator extends ConstraintValidator
             return;
         }
 
-        if(!$this->repo->find($value)){
+        if (!$this->repo->find($value)) {
             $this->context
                 ->buildViolation($constraint->message)
                 ->addViolation();

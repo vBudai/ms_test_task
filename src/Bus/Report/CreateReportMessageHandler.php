@@ -12,20 +12,21 @@ use Symfony\Component\Messenger\MessageBusInterface;
 readonly class CreateReportMessageHandler
 {
     public function __construct(
-        private FileReporter        $fileReporter,
+        private FileReporter $fileReporter,
         private MessageBusInterface $messageBus,
-    ){}
+    ) {
+    }
 
     /**
      * @throws ExceptionInterface
      */
     public function __invoke(CreateReportMessage $message): void
     {
-        try{
+        try {
             $this->fileReporter->report($message->id);
             $result = new ReportResultNotificationMessage($message->id, 'Success');
         } catch (\Throwable $e) {
-            $result = new ReportResultNotificationMessage($message->id, 'fail', ['error' => (string)$e]);
+            $result = new ReportResultNotificationMessage($message->id, 'fail', ['error' => (string) $e]);
         }
 
         $this->messageBus->dispatch($result);

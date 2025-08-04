@@ -18,7 +18,7 @@ class UserRepository extends ServiceEntityRepository
 
     public function isExistsByEmailOrPhone(string $email, string $phone): bool
     {
-        return (bool)$this->createQueryBuilder('u')
+        return (bool) $this->createQueryBuilder('u')
             ->select('1')
             ->where('u.email = :email')
             ->orWhere('u.phone = :phone')

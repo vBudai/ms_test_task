@@ -13,5 +13,6 @@ class CartProductRequest
             new AppAssert\ProductExists(),
         ])]
         public string $productId,
-    ){}
+    ) {
+    }
 }

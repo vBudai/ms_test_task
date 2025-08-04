@@ -9,7 +9,8 @@ class ReportRowDto implements \JsonSerializable
         public int $price,
         public int $amount,
         public ReportUserDataDto $user,
-    ){}
+    ) {
+    }
 
     public function jsonSerialize(): array
     {
@@ -19,7 +20,7 @@ class ReportRowDto implements \JsonSerializable
             'amount' => $this->amount,
             'user' => [
                 'id' => $this->user->id,
-            ]
+            ],
         ];
     }
 }

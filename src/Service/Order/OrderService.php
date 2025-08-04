@@ -8,7 +8,6 @@ use App\Enum\Order\OrderStatus;
 
 class OrderService
 {
-
     public function createOrder(CreateOrderRequest $request): Order
     {
         return new Order();

@@ -12,16 +12,17 @@ use Symfony\Component\Routing\Annotation\Route;
 final class OrdersController extends AbstractController
 {
     public function __construct(
-        private OrderService $orderService
-    ){}
+        private OrderService $orderService,
+    ) {
+    }
 
     #[Route('/api/orders', name: 'api_create_order', methods: ['POST'], format: 'json')]
     public function createOrder(
         #[MapRequestPayload]
         CreateOrderRequest $request,
-    ): JsonResponse
-    {
+    ): JsonResponse {
         $order = $this->orderService->createOrder($request);
+
         return $this->json($order);
     }
 }

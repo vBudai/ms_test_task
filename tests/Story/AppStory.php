@@ -27,24 +27,24 @@ final class AppStory extends Story
     public function build(): void
     {
         self::$products = ProductFactory::createMany(2, function (int $i) {
-            return match ($i){
+            return match ($i) {
                 1 => ['name' => 'Product A', 'cost' => 10],
                 2 => ['name' => 'Product B', 'cost' => 20],
             };
         });
 
         self::$user = UserFactory::createOne([
-            'id' => UuidV7::fromString(new UuidV7()),
+            'id' => new UuidV7(),
         ]);
 
-        $order  = OrderFactory::createOne(['relatedUser' => self::$user]);
+        $order = OrderFactory::createOne(['relatedUser' => self::$user]);
 
         self::$orderItems = OrderItemFactory::createMany(2, function (int $i) use ($order) {
             return [
                 'relatedOrder' => $order,
-                'product'      => self::$products[$i - 1],
-                'amount'       => $i,
-                'cost'         => self::$products[$i - 1]->getCost(),
+                'product' => self::$products[$i - 1],
+                'amount' => $i,
+                'cost' => self::$products[$i - 1]->getCost(),
             ];
         });
     }

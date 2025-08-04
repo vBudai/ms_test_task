@@ -9,11 +9,11 @@ use Symfony\Component\Validator\ConstraintValidator;
 class ProductExistsValidator extends ConstraintValidator
 {
     public function __construct(
-        private readonly ProductRepository $repo
-    ){}
+        private readonly ProductRepository $repo,
+    ) {
+    }
 
     /**
-     * @param mixed $value
      * @param ProductExists $constraint
      */
     public function validate(mixed $value, Constraint $constraint): void
@@ -22,7 +22,7 @@ class ProductExistsValidator extends ConstraintValidator
             return;
         }
 
-        if(!$this->repo->find($value)){
+        if (!$this->repo->find($value)) {
             $this->context
                 ->buildViolation($constraint->message)
                 ->setParameter('{{ value }}', (string) $value)

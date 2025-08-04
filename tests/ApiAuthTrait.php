@@ -8,9 +8,9 @@ use Symfony\Component\HttpFoundation\Response;
 trait ApiAuthTrait
 {
     private const TEST_USER = [
-        'name'     => 'Test',
-        'email'    => 'testuser@gmail.com',
-        'phone'    => '+7(999)123-45-67',
+        'name' => 'Test',
+        'email' => 'testuser@gmail.com',
+        'phone' => '+7(999)123-45-67',
         'password' => '12345678',
     ];
 
@@ -36,6 +36,7 @@ trait ApiAuthTrait
         );
 
         $response = json_decode($client->getResponse()->getContent(), true);
+
         return $response['token'];
     }
 

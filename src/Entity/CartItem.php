@@ -79,12 +79,14 @@ class CartItem
     public function incrementAmount(): static
     {
         ++$this->amount;
+
         return $this;
     }
 
     public function decrementAmount(): static
     {
         --$this->amount;
+
         return $this;
     }
 }

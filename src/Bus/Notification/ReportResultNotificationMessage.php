@@ -8,7 +8,8 @@ class ReportResultNotificationMessage
 {
     public function __construct(
         public UuidV7 $reportId,
-        public string  $result,
-        public ?array  $details = null
-    ){}
+        public string $result,
+        public ?array $details = null,
+    ) {
+    }
 }

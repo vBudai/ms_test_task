@@ -15,9 +15,9 @@ use Symfony\Component\Routing\Annotation\Route;
 final class CartsController extends AbstractController
 {
     public function __construct(
-        private readonly CartService $service
-    ){}
-
+        private readonly CartService $service,
+    ) {
+    }
 
     /**
      * @throws UserNotAuthenticatedException
@@ -26,9 +26,9 @@ final class CartsController extends AbstractController
     public function addProduct(
         #[MapRequestPayload]
         CartProductRequest $request,
-    ): JsonResponse
-    {
+    ): JsonResponse {
         $cartItem = $this->service->addProduct($request);
+
         return $this->json($cartItem);
     }
 
@@ -40,9 +40,9 @@ final class CartsController extends AbstractController
     public function removeProduct(
         #[MapRequestPayload]
         CartProductRequest $request,
-    ): JsonResponse
-    {
+    ): JsonResponse {
         $this->service->removeProduct($request);
+
         return $this->json([], Response::HTTP_NO_CONTENT);
     }
 
@@ -53,6 +53,7 @@ final class CartsController extends AbstractController
     public function clearCart(): JsonResponse
     {
         $this->service->clearCart();
+
         return $this->json([], Response::HTTP_NO_CONTENT);
     }
 }

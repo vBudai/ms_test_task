@@ -10,7 +10,6 @@ use Zenstruck\Foundry\Persistence\PersistentProxyObjectFactory;
  */
 final class OrderFactory extends PersistentProxyObjectFactory
 {
-
     public static function class(): string
     {
         return Order::class;

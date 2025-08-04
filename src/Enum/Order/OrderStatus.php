@@ -15,6 +15,7 @@ enum OrderStatus: string
     public static function values(): array
     {
         $cases = self::cases();
-        return array_map(fn(self $case) => $case->value, $cases);
+
+        return array_map(fn (self $case) => $case->value, $cases);
     }
 }

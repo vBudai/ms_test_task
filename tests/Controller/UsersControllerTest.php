@@ -16,12 +16,11 @@ class UsersControllerTest extends WebTestCase
         /* ARRANGE */
         $client = static::createClient();
         $user = [
-            'name'     => 'Test',
-            'email'    => 'testuser@gmail.com',
-            'phone'    => '+7(999)123-45-67',
+            'name' => 'Test',
+            'email' => 'testuser@gmail.com',
+            'phone' => '+7(999)123-45-67',
             'password' => '12345678',
         ];
-
 
         /* ACT */
         $client->request(
@@ -47,12 +46,11 @@ class UsersControllerTest extends WebTestCase
         /* ARRANGE */
         $client = static::createClient();
         $user = [
-            'name'     => 'Test',
-            'email'    => 'testuserexample.com',
-            'phone'    => '79991234567',
+            'name' => 'Test',
+            'email' => 'testuserexample.com',
+            'phone' => '79991234567',
             'password' => '12345678',
         ];
-
 
         /* ACT */
         $client->request(
@@ -61,7 +59,6 @@ class UsersControllerTest extends WebTestCase
             server: ['CONTENT_TYPE' => 'application/json'],
             content: json_encode($user)
         );
-
 
         /* ASSERT */
         $this->assertResponseIsUnprocessable();

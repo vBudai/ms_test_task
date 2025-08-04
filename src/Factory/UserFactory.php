@@ -10,7 +10,7 @@ final readonly class UserFactory
 {
     public function __construct(
         private UserPasswordHasherInterface $passwordHasher,
-    ){
+    ) {
     }
 
     public function fromRegisterRequest(RegisterUserRequest $request): User

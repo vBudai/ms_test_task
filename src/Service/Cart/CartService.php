@@ -18,21 +18,21 @@ use App\Service\User\UserProvider;
 readonly class CartService
 {
     public function __construct(
-        private CartRepository     $cartRepo,
+        private CartRepository $cartRepo,
         private CartItemRepository $cartItemRepo,
-        private ProductRepository  $productRepo,
+        private ProductRepository $productRepo,
 
-        private CartFactory     $cartFactory,
+        private CartFactory $cartFactory,
         private CartItemFactory $cartItemFactory,
 
-        private UserProvider       $userProvider,
-    ){
+        private UserProvider $userProvider,
+    ) {
     }
 
     public function createCartForUser(User $user): Cart
     {
         $cart = $this->cartRepo->findOneBy(['relatedUser' => $user]);
-        if($cart !== null){
+        if (null !== $cart) {
             return $cart;
         }
 
@@ -54,7 +54,7 @@ readonly class CartService
 
         $cartItem = $this->cartItemRepo->findOneBy([
             'product' => $product,
-            'cart'    => $cart,
+            'cart' => $cart,
         ]) ?? $this->cartItemFactory->createForProduct($product, $cart);
 
         $cartItem->incrementAmount();
@@ -76,16 +76,15 @@ readonly class CartService
 
         $cartItem = $this->cartItemRepo->findOneBy([
             'product' => $product,
-            'cart'    => $cart,
+            'cart' => $cart,
         ]);
-        if($cartItem === null){
+        if (null === $cartItem) {
             throw new CartItemNotFoundException();
         }
 
-        if($cartItem->getAmount() === 1){
+        if (1 === $cartItem->getAmount()) {
             $this->cartItemRepo->remove($cartItem, true);
-        }
-        else{
+        } else {
             $cartItem->decrementAmount();
             $this->cartItemRepo->add($cartItem, true);
         }

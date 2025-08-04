@@ -5,13 +5,13 @@ namespace App\Entity;
 use App\Enum\Order\OrderDeliveryType;
 use App\Enum\Order\OrderStatus;
 use App\Repository\OrderRepository;
+use App\Validator\Constraints as AppAssert;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Uid\Uuid;
-use Symfony\Component\Validator\Constraints as Assert;
-use App\Validator\Constraints as AppAssert;
 use Symfony\Component\Uid\UuidV7;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: OrderRepository::class)]
 #[ORM\Table(name: 'orders')]
@@ -52,7 +52,7 @@ class Order
 
     public function __construct(?UuidV7 $id = null)
     {
-        $this->id    = $id ?? Uuid::v7();
+        $this->id = $id ?? Uuid::v7();
         $this->items = new ArrayCollection();
     }
 
@@ -130,6 +130,7 @@ class Order
     public function removeItem(OrderItem $item): static
     {
         $this->items->removeElement($item);
+
         return $this;
     }
 }

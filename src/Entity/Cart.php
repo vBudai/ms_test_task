@@ -33,7 +33,7 @@ class Cart
 
     public function __construct(?UuidV7 $id = null)
     {
-        $this->id    = $id ?? Uuid::v7();
+        $this->id = $id ?? Uuid::v7();
         $this->items = new ArrayCollection();
     }
 

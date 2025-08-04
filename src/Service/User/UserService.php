@@ -12,15 +12,16 @@ readonly class UserService
 {
     public function __construct(
         private UserRepository $repo,
-        private UserFactory    $factory,
-    ){}
+        private UserFactory $factory,
+    ) {
+    }
 
     /**
      * @throws UserAlreadyExistsException
      */
     public function register(RegisterUserRequest $request): User
     {
-        if($this->repo->isExistsByEmailOrPhone($request->email, $request->phone)){
+        if ($this->repo->isExistsByEmailOrPhone($request->email, $request->phone)) {
             throw new UserAlreadyExistsException();
         }
 
