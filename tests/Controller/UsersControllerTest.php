@@ -13,8 +13,8 @@ class UsersControllerTest extends WebTestCase
 
     public function testRegisterUserSuccess(): void
     {
+        /* ARRANGE */
         $client = static::createClient();
-
         $user = [
             'name'     => 'Test',
             'email'    => 'testuser@gmail.com',
@@ -22,31 +22,30 @@ class UsersControllerTest extends WebTestCase
             'password' => '12345678',
         ];
 
+
+        /* ACT */
         $client->request(
             method: 'POST',
             uri: self::REGISTER_URI,
             server: ['CONTENT_TYPE' => 'application/json'],
             content: json_encode($user)
         );
+        $response = json_decode($client->getResponse()->getContent(), true);
 
+        /* ASSERT */
         $this->assertResponseIsSuccessful();
         $this->assertResponseFormatSame('json');
 
-        $response = json_decode($client->getResponse()->getContent(), true);
-
-        $this->assertEquals('success', $response['status']);
-
-        $this->assertArrayHasKey('data', $response);
-        $this->assertArrayHasKey('user', $response['data']);
-        $this->assertArrayHasKey('cart', $response['data']);
-
-        $this->assertEquals($user['email'], $response['data']['user']['email']);
+        $this->arrayHasKey('id');
+        $this->assertEquals($user['name'], $response['name']);
+        $this->assertEquals($user['email'], $response['email']);
+        $this->assertEquals($user['phone'], $response['phone']);
     }
 
     public function testRegisterUserValidationError(): void
     {
+        /* ARRANGE */
         $client = static::createClient();
-
         $user = [
             'name'     => 'Test',
             'email'    => 'testuserexample.com',
@@ -54,6 +53,8 @@ class UsersControllerTest extends WebTestCase
             'password' => '12345678',
         ];
 
+
+        /* ACT */
         $client->request(
             method: 'POST',
             uri: self::REGISTER_URI,
@@ -61,6 +62,8 @@ class UsersControllerTest extends WebTestCase
             content: json_encode($user)
         );
 
+
+        /* ASSERT */
         $this->assertResponseIsUnprocessable();
     }
 }
