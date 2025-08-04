@@ -17,9 +17,6 @@ final class ProductsController extends AbstractController
     #[Route('/api/products', name: 'api_products_get_all', methods: ['GET'], format: 'json')]
     public function getAll(): JsonResponse
     {
-        return $this->json([
-            'status' => 'success',
-            'data'   => $this->service->getAllProducts()
-        ]);
+        return $this->json($this->service->getAllProducts());
     }
 }

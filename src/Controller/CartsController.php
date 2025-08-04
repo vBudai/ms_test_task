@@ -29,7 +29,7 @@ final class CartsController extends AbstractController
     ): JsonResponse
     {
         $cartItem = $this->service->addProduct($request);
-        return $this->json([ 'status' => 'success', 'data' => $cartItem ]);
+        return $this->json($cartItem);
     }
 
     /**

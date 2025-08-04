@@ -22,6 +22,6 @@ final class OrdersController extends AbstractController
     ): JsonResponse
     {
         $order = $this->orderService->createOrder($request);
-        return $this->json(['status' => 'success', 'data' => $order]);
+        return $this->json($order);
     }
 }

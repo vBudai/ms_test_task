@@ -28,16 +28,10 @@ final class UsersController extends AbstractController
     ): JsonResponse
     {
         $user = $this->userService->register($request);
-        $cart = $this->cartService->createCartForUser($user);
+        $this->cartService->createCartForUser($user);
 
         return $this->json(
-            data: [
-                'status' => 'success',
-                'data'   => [
-                    'user' => $user,
-                    'cart' => $cart,
-                ]
-            ],
+            data: $user,
             context: [
                 'groups' => ['public' ]
             ]

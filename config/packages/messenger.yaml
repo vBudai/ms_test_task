@@ -11,11 +11,24 @@ framework:
                         name: reports
                         type: direct
 
+            notifications:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%/notifications'
+                options:
+                    exchange:
+                        name: notifications
+                        type: direct
         routing:
-            App\Bus\Report\ReportCreatedMessage: reports
+            App\Bus\Report\CreateReportMessage: reports
+            App\Bus\Notification\ReportResultNotificationMessage: notifications
 
 when@test:
-   framework:
-       messenger:
-           transports:
-               async: 'in-memory://'
+    framework:
+        messenger:
+
+            transports:
+                reports: 'test://'
+                notifications: 'test://'
+
+            routing:
+                App\Bus\Report\CreateReportMessage: reports
+                App\Bus\Notification\ReportResultNotificationMessage: notifications

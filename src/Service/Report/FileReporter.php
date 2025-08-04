@@ -22,16 +22,14 @@ readonly class FileReporter implements ReporterInterface
         }
     }
 
-    public function report(): UuidV7
+    public function report(UuidV7 $reportId): string
     {
         $rows    = $this->repo->getOrderItemsWithUserInfo();
         $reports = $this->factory->createDtosFromDbRows($rows);
 
-        $fileName = new UuidV7();
-        $path =  "$this->filePath/$fileName.json";
-
+        $path =  "$this->filePath/$reportId.json";
         file_put_contents($path, json_encode($reports, JSON_PRETTY_PRINT | JSON_UNESCAPED_UNICODE));
 
-        return $fileName;
+        return $path;
     }
 }
