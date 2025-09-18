@@ -1,0 +1,34 @@
+framework:
+    messenger:
+        # Uncomment this (and the failed transport below) to send failed messages to this transport for later handling.
+        # failure_transport: failed
+
+        transports:
+            reports:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%/reports'
+                options:
+                    exchange:
+                        name: reports
+                        type: direct
+
+            notifications:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%/notifications'
+                options:
+                    exchange:
+                        name: notifications
+                        type: direct
+        routing:
+            App\Bus\Report\CreateReportMessage: reports
+            App\Bus\Notification\ReportResultNotificationMessage: notifications
+
+when@test:
+    framework:
+        messenger:
+
+            transports:
+                reports: 'test://'
+                notifications: 'test://'
+
+            routing:
+                App\Bus\Report\CreateReportMessage: reports
+                App\Bus\Notification\ReportResultNotificationMessage: notifications
